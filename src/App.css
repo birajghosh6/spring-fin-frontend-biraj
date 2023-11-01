@@ -1,0 +1,22 @@
+.App {
+  text-align: center;
+  background-color: lightblue;
+  border-radius: 60px;
+
+  width: 60%;
+  height: 60%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+html, body, div#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0%;
+  padding: 0%;
+}
