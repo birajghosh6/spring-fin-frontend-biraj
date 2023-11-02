@@ -3,11 +3,11 @@ import React from 'react';
 import './players.css';
 import {fetchPlayers, deletePlayer, incrementPlayerPoint, decrementPlayerPoint} from '../utilities/apiHelper';
 
-const Players = ({players, setPlayers}) => {
+const Players = ({players, setPlayers, setShowPage, setPlayerToDisplay}) => {
 
   const getNameSortDirectionTag = () => document.getElementById('name-sort').children[0];
   const getPointsSortDirectionTag = () => document.getElementById('points-sort').children[0];
-  const getPlayerDivContainer = (e) => e.currentTarget.parentElement.parentElement;
+  const getPlayerRowContainerFromButtons = (e) => e.currentTarget.parentElement.parentElement;
 
   const onClickSorters = (e) => {
     const otherSortDiv = document.getElementById(e.currentTarget.id === 'points-sort'?'name-sort':'points-sort');
@@ -32,7 +32,7 @@ const Players = ({players, setPlayers}) => {
   }
 
   const onClickDeletePlayer = (e) => {
-    const playerDivContainer = getPlayerDivContainer(e);
+    const playerDivContainer = getPlayerRowContainerFromButtons(e);
     deletePlayer(playerDivContainer.id)
     .then(data => {setPlayers(data)});
 
@@ -42,7 +42,7 @@ const Players = ({players, setPlayers}) => {
   }
 
   const onClickUpdatePoint = (e) => {
-    const playerDivContainer = getPlayerDivContainer(e);
+    const playerDivContainer = getPlayerRowContainerFromButtons(e);
 
     if (e.currentTarget.textContent === '+') {
       incrementPlayerPoint(playerDivContainer.id)
@@ -63,14 +63,21 @@ const Players = ({players, setPlayers}) => {
     
   }
 
+  const onClickShowPlayerInfo = (e) => {
+    const playerRowContainer = e.currentTarget.parentElement;
+    let playerToDisplay = players.find(player => Number(player['id']) === Number(playerRowContainer.id));
+    setPlayerToDisplay(playerToDisplay);
+    setShowPage('player-info');
+  }
+
   const renderPlayer = (player, idx) => {
     return (
     <div className='player-row' key={player.id} id={player.id}>
       <div className='player-row-item delete-player-btn'><button onClick={onClickDeletePlayer}>X</button></div>
-      <div className='player-row-item player-name'><span>{player.name}</span></div>
+      <div className='player-row-item player-name api-data' onClick={onClickShowPlayerInfo}><span>{player.name}</span></div>
       <div className='player-row-item increase-player-point'><button onClick={onClickUpdatePoint}>+</button></div>
       <div className='player-row-item decrease-player-point'><button onClick={onClickUpdatePoint}>-</button></div>
-      <div className='player-row-item player-points'><span>{player.points} points</span></div>
+      <div className='player-row-item player-points api-data'><span>{player.points} points</span></div>
     </div>
     );
   }

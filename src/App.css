@@ -1,12 +1,12 @@
 .App {
   text-align: center;
   background-color: lightblue;
-  border-radius: 60px;
 
   width: 60%;
   height: 60%;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }

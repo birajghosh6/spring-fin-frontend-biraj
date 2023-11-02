@@ -1,15 +1,16 @@
 import './App.css';
-import './components/players';
-// import fetchPlayers from './utilities/apiHelper';
+import Players from './components/players';
+import PlayerInfo from './components/playerInfo';
 import {fetchPlayers} from './utilities/apiHelper';
 
 import React, { useState, useEffect } from 'react';
-import Players from './components/players';
+
 
 export default function App() {
 
   const [players, setPlayers] = useState([]);
   const [showPage, setShowPage] = useState('all-players');
+  const [playerToDisplay, setPlayerToDisplay] = useState({});
 
   useEffect(() => {
     document.title = "Demo Spring Financial";
@@ -17,9 +18,35 @@ export default function App() {
     .then(data => {setPlayers(data)});
   }, []);
 
-  return (
-    <div className='App'>
-      <Players players = {players} setPlayers={setPlayers}/>
-    </div>
-  );
+  const renderSwitch = () => {
+    switch (showPage) {
+      case 'all-players':
+        return (
+          <div className='App'>
+            <Players 
+              players = {players} 
+              setPlayers={setPlayers} 
+              setShowPage={setShowPage}
+              setPlayerToDisplay={setPlayerToDisplay}
+            />
+            {/* <button>Add User</button> */}
+        </div>
+          
+        );
+      case 'player-info':
+        return (
+          <div className='App'>
+          <PlayerInfo 
+            playerToDisplay={playerToDisplay}
+            setShowPage={setShowPage}
+          />
+          </div>
+          
+        );
+      default:
+        return (<div>BAD COMPONENT</div>);
+    }
+  } 
+
+  return renderSwitch();
 }
