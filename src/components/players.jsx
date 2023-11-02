@@ -3,7 +3,7 @@ import React from 'react';
 import './players.css';
 import {fetchPlayers, deletePlayer, incrementPlayerPoint, decrementPlayerPoint} from '../utilities/apiHelper';
 
-const Players = ({players, setPlayers, setShowPage, setPlayerToDisplay}) => {
+const Players = ({setPlayers, playersToDisplay, setPlayersToDisplay, setShowPage, setPlayerToDisplay}) => {
 
   const getNameSortDirectionTag = () => document.getElementById('name-sort').children[0];
   const getPointsSortDirectionTag = () => document.getElementById('points-sort').children[0];
@@ -28,13 +28,13 @@ const Players = ({players, setPlayers, setShowPage, setPlayerToDisplay}) => {
       sortDirectionTag.textContent = 'v';
     }
     fetchPlayers(sortItem, order)
-    .then(data => {setPlayers(data)});
+    .then(data => {setPlayers(data); setPlayerToDisplay(data);});
   }
 
   const onClickDeletePlayer = (e) => {
     const playerDivContainer = getPlayerRowContainerFromButtons(e);
     deletePlayer(playerDivContainer.id)
-    .then(data => {setPlayers(data)});
+    .then(data => {setPlayers(data); setPlayersToDisplay(data);});
 
     getNameSortDirectionTag().style.visibility = 'hidden';
     getPointsSortDirectionTag().style.visibility = 'visible';
@@ -49,6 +49,7 @@ const Players = ({players, setPlayers, setShowPage, setPlayerToDisplay}) => {
       .then(data => {
         if (data) {
           setPlayers(data);
+          setPlayersToDisplay(data);
         }
       });
     }
@@ -57,6 +58,7 @@ const Players = ({players, setPlayers, setShowPage, setPlayerToDisplay}) => {
       .then(data => {
         if (data) {
           setPlayers(data);
+          setPlayersToDisplay(data);
         }
       });
     }
@@ -65,7 +67,7 @@ const Players = ({players, setPlayers, setShowPage, setPlayerToDisplay}) => {
 
   const onClickShowPlayerInfo = (e) => {
     const playerRowContainer = e.currentTarget.parentElement;
-    let playerToDisplay = players.find(player => Number(player['id']) === Number(playerRowContainer.id));
+    let playerToDisplay = playersToDisplay.find(player => Number(player['id']) === Number(playerRowContainer.id));
     setPlayerToDisplay(playerToDisplay);
     setShowPage('player-info');
   }
@@ -99,7 +101,7 @@ const Players = ({players, setPlayers, setShowPage, setPlayerToDisplay}) => {
           <span name='points'>POINTS</span>
         </div>
       </div>
-      {players.map((player) => renderPlayer(player))}
+      {playersToDisplay.map((player) => renderPlayer(player))}
     </div>
   );
 }

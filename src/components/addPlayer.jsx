@@ -2,17 +2,16 @@ import React from 'react';
 import './addPlayer.css';
 import { addPlayer } from '../utilities/apiHelper';
 
-const AddPlayer = ({setShowPage,setPlayers}) => {
+const AddPlayer = ({setShowPage,setPlayers,setPlayersToDisplay}) => {
 
-    const getFormValidationDiv = () => document.getElementById('form-validation-error-message');
-    // const getAddPlayerForm = () => document.getElementById('add-player-form');
+    const getFormInfoDiv = () => document.getElementById('form-info-message');
 
     const areInputsValid = (name, age, address) => {
 
-        const formValidationDiv = getFormValidationDiv();
+        const formInfoDiv = getFormInfoDiv();
 
         let missingArr = [];
-        formValidationDiv.textContent="";
+        formInfoDiv.textContent="";
 
         if (String(name).length === 0) {
             missingArr.push("Name");
@@ -25,8 +24,9 @@ const AddPlayer = ({setShowPage,setPlayers}) => {
         }
 
         if (missingArr.length > 0) {
-            formValidationDiv.textContent = missingArr.join(', ') + " must be provided";
-            formValidationDiv.style.visibility = 'visible';
+            formInfoDiv.textContent = missingArr.join(', ') + " must be provided";
+            formInfoDiv.style.color = "red";
+            formInfoDiv.style.visibility = 'visible';
 
             return false;
         }
@@ -41,6 +41,8 @@ const AddPlayer = ({setShowPage,setPlayers}) => {
         const ageInput = e.currentTarget.elements['player-age-input'];
         const addressInput = e.currentTarget.elements['player-address-input'];
 
+        const formInfoDiv = getFormInfoDiv();
+
         if (!areInputsValid(nameInput.value, ageInput.value, addressInput.value)) {
             return;
         }
@@ -49,6 +51,17 @@ const AddPlayer = ({setShowPage,setPlayers}) => {
         .then(data => {
             if (data) {
                 setPlayers(data);
+                setPlayersToDisplay(data);
+
+                formInfoDiv.textContent = "Player added successfully!";    
+                formInfoDiv.style.color = 'green';
+                formInfoDiv.style.visibility = 'visible';
+
+                setTimeout(() => {
+                    formInfoDiv.style.visibility = 'hidden';
+                    formInfoDiv.style.color = 'red';
+                    formInfoDiv.textContent = 'Some validation error';
+                }, 2000);
             }
         });
 
@@ -62,9 +75,10 @@ const AddPlayer = ({setShowPage,setPlayers}) => {
     }
 
     const onInputHandler = (e) =>  {
-        const formValidationDiv = getFormValidationDiv();
-        formValidationDiv.textContent = "Some validation error";
-        formValidationDiv.style.visibility = 'hidden';
+        const formInfoDiv = getFormInfoDiv();
+        formInfoDiv.textContent = "Some validation error";
+        formInfoDiv.style.visibility = 'hidden';
+        formInfoDiv.style.color = "red";
     }
     
     return (
@@ -91,7 +105,7 @@ const AddPlayer = ({setShowPage,setPlayers}) => {
         <fieldset className='submit-fieldset'>
             <button type='submit'>Submit</button>
         </fieldset>
-        <div id='form-validation-error-message'>Some validation error</div>
+        <div id='form-info-message'>Some validation error</div>
         </form>
     </div>
     )

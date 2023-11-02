@@ -63,7 +63,7 @@
     flex-basis: 10%;
 }
 
-#form-validation-error-message {
+#form-info-message {
     color: red;
     font-weight: bolder;
     visibility: hidden;
