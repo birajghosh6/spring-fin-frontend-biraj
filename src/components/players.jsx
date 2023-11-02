@@ -28,7 +28,7 @@ const Players = ({setPlayers, playersToDisplay, setPlayersToDisplay, setShowPage
       sortDirectionTag.textContent = 'v';
     }
     fetchPlayers(sortItem, order)
-    .then(data => {setPlayers(data); setPlayerToDisplay(data);});
+    .then(data => {setPlayers(data); setPlayersToDisplay(data);});
   }
 
   const onClickDeletePlayer = (e) => {
