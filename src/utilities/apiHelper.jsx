@@ -73,8 +73,34 @@ const updatePlayerPoint = async(playerId, point) => {
     return getVerifiedSuccessResponse(apiResponse)['Players'];
 }
 
+const addPlayer = async(name, age, address) => {
+    if (!name || !age || !address) {
+        console.log("Inputs missing for API call");
+        return;
+    }
+    
+    const body = {
+        "Name": name,
+        "Age": age,
+        "Address": address
+    }
+
+    const url = `${process.env.REACT_APP_BACKEND_API_URL}/player`;
+
+    const apiResponse = await fetch(url, {
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify(body)
+    })
+    .then(res => res.json())
+    .catch(e => {
+        console.log(e);
+    });
+    return getVerifiedSuccessResponse(apiResponse)['Players'];
+}
+
 const incrementPlayerPoint = async(playerId) => updatePlayerPoint(playerId, 1);
 const decrementPlayerPoint = async(playerId) => updatePlayerPoint(playerId, -1);
 
 
-export {fetchPlayers, deletePlayer, incrementPlayerPoint, decrementPlayerPoint};
+export {fetchPlayers, deletePlayer, incrementPlayerPoint, decrementPlayerPoint, addPlayer};

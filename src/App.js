@@ -1,6 +1,7 @@
 import './App.css';
 import Players from './components/players';
 import PlayerInfo from './components/playerInfo';
+import AddPlayer from './components/addPlayer';
 import {fetchPlayers} from './utilities/apiHelper';
 
 import React, { useState, useEffect } from 'react';
@@ -18,6 +19,10 @@ export default function App() {
     .then(data => {setPlayers(data)});
   }, []);
 
+  const onClickAddPlayer = (e) => {
+    setShowPage('add-player');
+  }
+
   const renderSwitch = () => {
     switch (showPage) {
       case 'all-players':
@@ -29,7 +34,7 @@ export default function App() {
               setShowPage={setShowPage}
               setPlayerToDisplay={setPlayerToDisplay}
             />
-            {/* <button>Add User</button> */}
+            <div className='add-user-button'><button onClick={onClickAddPlayer}>+ Add User</button></div>
         </div>
           
         );
@@ -42,6 +47,15 @@ export default function App() {
           />
           </div>
           
+        );
+      case 'add-player':
+        return (
+          <div className='App'>
+          <AddPlayer 
+            setShowPage={setShowPage}
+            setPlayers={setPlayers} 
+          />
+          </div>
         );
       default:
         return (<div>BAD COMPONENT</div>);

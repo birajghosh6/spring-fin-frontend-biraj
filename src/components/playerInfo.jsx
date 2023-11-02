@@ -32,7 +32,7 @@ const PlayerInfo = ({playerToDisplay, setShowPage}) => {
           <div className='player-info-row'>
             <span className='player-info-row-label'>Address</span>
             <span className='player-info-row-equals'>=&gt;</span>
-            <span className='player-info-row-value'>{playerToDisplay['points']}</span>
+            <span className='player-info-row-value'>{playerToDisplay['address']}</span>
           </div>
         </div>
     </div>
