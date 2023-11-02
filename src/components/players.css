@@ -38,6 +38,11 @@
     flex-basis: 12%;
 }
 
+.delete-player-btn button {
+    background-color: rgb(230, 129, 129);
+    color: white;
+}
+
 button {
     height: 50%;
     width: 50%;
